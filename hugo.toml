@@ -1,0 +1,4 @@
+baseURL = 'https://blog.pyaxy.com/'
+locale = 'zh-cn'
+title = 'My New Hugo Project'
+theme = 'PaperMod'
