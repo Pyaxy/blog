@@ -1,0 +1,33 @@
+# Hugo build output
+/public/
+
+/resources/_gen/
+
+/.hugo_build.lock
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# JetBrains IDE
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Node
+node_modules/
+
+# Temporary files
+tmp/
+temp/
