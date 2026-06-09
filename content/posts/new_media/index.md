@@ -60,7 +60,7 @@ series = []
 
 ##### OpenList
 
-{{< github repo="OpenListTeam/OpenList">}}
+[OpenListTeam/OpenList](https://github.com/OpenListTeam/OpenList)
 
 相当于在服务器上自建了一个**品牌为OpenList的网盘**，可以将市面上的其他网盘挂载在该网盘的目录下，理解这一点对后续架构的理解**至关重要**。
 > [!NOTE]
@@ -69,21 +69,21 @@ series = []
 
 ##### TaoSync
 
-{{< github repo="dr34m-cn/taosync">}}
+[dr34m-cn/taosync](https://github.com/dr34m-cn/taosync)
 
 可以将OpenList网盘中的*在线*内容下载到服务器上，主要用于将OpenList网盘生成的Strm文件同步到服务器上。
 
 
 ##### Mihomo
 
-{{< github repo="MetaCubeX/mihomo">}}
+[MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo)
 
 基于Clash.Meta的科学上网组件，实现服务器访问墙外的网站，主要用于解决Emby获取影片元数据连接不成功的问题。
 
 
 ##### Metacubexd
 
-{{< github repo="MetaCubeX/metacubexd">}}
+[MetaCubeX/metacubexd](https://github.com/MetaCubeX/metacubexd)
 Mihomo的前端面板，用于控制Mihomo的代理节点。
 
 
@@ -94,7 +94,7 @@ Mihomo的前端面板，用于控制Mihomo的代理节点。
 
 ##### MediaLinker
 
-{{< github repo="thsrite/MediaLinker">}}
+[thsrite/MediaLinker](https://github.com/thsrite/MediaLinker)
 
 对Emby实现反向代理，并拦截用户的观影请求重定向到网盘，是**实现观影时服务器0负载的关键**
 
