@@ -15,15 +15,20 @@
   pageRef = "posts"
   weight = 10
 
-# [[main]]
-#   name = "Parent"
-#   weight = 20
+[[main]]
+  name = "检索"
+  weight = 20
 
-#[[main]]
-#  name = "example sub-menu 1"
-#  parent = "Parent"
-#  pageRef = "posts"
-#  weight = 20
+[[main]]
+  name = "按标签"
+  parent = "检索"
+  pageRef = "tags"
+  weight = 20
+
+[[main]]
+  identifier = "Github"
+  pre = "github"
+  url = "https://github.com/Pyaxy/blog"
 
 #[[main]]
 #  name = "example sub-menu 2"
