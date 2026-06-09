@@ -1,5 +1,54 @@
 +++
-date = '{{ .Date }}'
+title = "{{ replace .File.ContentBaseName "-" " " | title }}"
+date = "{{ .Date }}"
 draft = true
-title = '{{ replace .File.ContentBaseName "-" " " | title }}'
+description = ""
+summary = ""
+tags = []
+categories = []
+series = []
+
+[params]
+  showTableOfContents = true
+  showReadingTime = true
 +++
+
+## 写在前面
+
+用一两段话说明这篇文章想解决什么问题、为什么值得写，以及读者读完能带走什么。
+
+## 背景
+
+记录必要的上下文：
+
+- 发生了什么？
+- 当时有哪些约束或前提？
+- 之前的做法有什么问题？
+
+## 核心思路
+
+先给出结论，再展开推导过程。可以把关键观点拆成几条：
+
+1. 观点一
+2. 观点二
+3. 观点三
+
+## 实践过程
+
+描述你具体做了什么，遇到了什么坑，以及如何判断方案是否有效。
+
+```bash
+# 如果有命令、配置或复现步骤，放在这里
+```
+
+## 结果
+
+总结最终效果。尽量写得具体一点，例如性能变化、体验改善、踩坑减少、认知更新等。
+
+## 继续思考
+
+留下后续可以探索的问题：
+
+- 还有哪些边界情况？
+- 有没有更简单的方案？
+- 下次遇到类似问题会怎么做？
