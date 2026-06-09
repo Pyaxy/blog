@@ -11,19 +11,24 @@
 # ordered by weight from lowest to highest.
 
 [[main]]
- name = "Posts"
- pageRef = "posts"
- weight = 10
+  name = "Posts"
+  pageRef = "posts"
+  weight = 10
 
-#[[main]]
-#  name = "Parent"
-#  weight = 20
+[[main]]
+  name = "Explore"
+  weight = 20
 
-#[[main]]
-#  name = "example sub-menu 1"
-#  parent = "Parent"
-#  pageRef = "posts"
-#  weight = 20
+[[main]]
+  name = "By Tags"
+  parent = "Explore"
+  pageRef = "tags"
+  weight = 20
+
+[[main]]
+  identifier = "Github"
+  pre = "github"
+  url = "https://github.com/Pyaxy/blog"
 
 #[[main]]
 #  name = "example sub-menu 2"
