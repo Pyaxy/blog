@@ -51,7 +51,7 @@ If the setup succeeds, you can build a home media library with:
 
 Final result:
 
-![](https://img.pyaxy.com/img/20260130193802327.png)
+![](20260130193802327.png)
 
 ---
 
@@ -104,7 +104,7 @@ MediaLinker reverse proxies Emby and intercepts user playback requests, redirect
 
 The core idea of this solution is to **turn a lightweight VPS into a gateway for a petabyte-scale data center**. All data exchanged between the user and the VPS consists of control signals. The VPS directly redirects the user's playback request to the cloud drive, and the video traffic **bypasses** the VPS and goes straight to the user's device. This greatly lowers the server hardware requirements.
 
-![](https://img.pyaxy.com/img/20260130201236421.png)
+![](20260130201236421.png)
 
 # Deployment
 
@@ -142,13 +142,13 @@ docker compose up -d
 
 After it starts successfully, visit `http://<server-ip>:5244`. You should be able to enter the OpenList main page.
 
-![](https://img.pyaxy.com/img/20260130203512122.png)
+![](20260130203512122.png)
 
 The account is `admin`. The password will be printed in the terminal logs the first time OpenList starts. After logging in, change the password immediately.
 
 Follow OpenList's [official documentation](https://doc.oplist.org/guide/drivers/common) to add the cloud drive you use. I added 115 Cloud Drive. After adding it successfully, it will appear on the homepage.
 
-![](https://img.pyaxy.com/img/20260130204151688.png)
+![](20260130204151688.png)
 
 ##### Generate Strm Files
 
@@ -168,7 +168,7 @@ OpenList supports scanning an internal target and automatically generating corre
 
 After this is complete, OpenList will automatically generate `.strm` files for the directory you selected under `/virtual_strm`.
 
-![](https://img.pyaxy.com/img/20260131032034875.png)
+![](20260131032034875.png)
 
 As expected, if we visit the link inside a `.strm` file in the browser at this point, it should play directly, and the server should not show any obvious traffic changes.
 
@@ -218,7 +218,7 @@ Enter TaoSync, go to Engine Management -> Add Engine, and fill in:
 2. Remark: fill in anything you like.
 3. Token: in OpenList, go to Management -> Settings -> Other -> the token at the very bottom of the page. Copy it and paste it here.
 
-![](https://img.pyaxy.com/img/20260131034852319.png)
+![](20260131034852319.png)
 
 Next, go to Job Management -> Create Job, and fill in:
 
@@ -309,7 +309,7 @@ After creating an account and logging in, go to Settings -> Library -> New Libra
 
 After creating it successfully, it should look like the image below. At this point, videos should be playable from the homepage. CPU usage should be maxed out, and the server should show obvious upload and download traffic. If playback fails, that is most likely because the browser's decoding ability is too weak.
 
-![](https://img.pyaxy.com/img/20260131044400514.png)
+![](20260131044400514.png)
 
 In addition, your media library may fail to load poster images and other metadata. This is most likely because the websites used to fetch this data are blocked by the Great Firewall. Next, we will deploy a proxy service on the server to solve this problem.
 
@@ -359,7 +359,7 @@ Since the proxy is only needed to fetch media metadata, the requirements for the
 
 Check the downloaded configuration file and make sure it starts with the following content. If not, you need to add it yourself.
 
-![](https://img.pyaxy.com/img/20260131054519356.png)
+![](20260131054519356.png)
 
 Run Docker again, then visit `http://<server-ip>:8088` to enter the Mihomo management page and configure node selection and related settings.
 
@@ -401,7 +401,7 @@ MediaLinker was created for this. MediaLinker is the Docker version of embyExter
 
 When a user initiates a playback request, MediaLinker intercepts the request and calls Emby's API to obtain the direct playback URL. Once it succeeds, it returns that URL directly to the user. At this point, the direct link target is OpenList. The user directly accesses OpenList's direct link. After OpenList receives the request, it looks up the database/cache based on the direct link, determines which file in which storage backend it corresponds to, such as Aliyun Drive, OneDrive, 115, Baidu Netdisk, and so on, then calls the corresponding official cloud drive API to obtain the resource's official direct link. This is usually something like `https://cdn.115.com/xxx/xxx/xxx?sign=xxxx&expires=10000`. These links are usually only valid for a limited time and differ each time they are obtained. OpenList then returns this link to the user via a 302 redirect, and the user successfully establishes a data flow from the user directly to the cloud drive CDN.
 
-![](https://img.pyaxy.com/img/20260131051831779.png)
+![](20260131051831779.png)
 
 Continue writing `docker-compose.yml`.
 
