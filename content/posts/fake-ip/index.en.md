@@ -19,7 +19,7 @@ I recently bought a new soft router and configured OpenClash as a whole-home pro
 
 Then came the problem. The mode currently promoted by OpenClash is fake-ip mode. But in fake-ip mode, if you want to implement LAN device allowlist/blocklist filtering, the DNS hijacking mode must be changed to **Firewall Forwarding**, and **Dnsmasq Forwarding is not supported**.
 
-![](https://img.pyaxy.com/img/20260307000056505.png)
+![](20260307000056505.png)
 
 Giving up Dnsmasq forwarding means giving up OpenClash's "bypass mainland China" feature. This feature allows traffic to popular domestic Chinese websites to avoid being processed by the Clash core, effectively reducing the load on the core while improving access speed.
 
@@ -72,7 +72,7 @@ Go to `Network` -> `DHCP/DNS` -> `Static Leases` -> `Add`.
 
 For `MAC address`, select the device's MAC address. For `IPv4 address`, enter the device's current IP address. Set `Lease time` to 12h, keep the rest as default, then save and apply the configuration. From now on, every time the device connects to the network, it will receive this same IP address.
 
-![](https://img.pyaxy.com/img/20260307004626200.png)
+![](20260307004626200.png)
 
 ## Modify Source Traffic Access Control
 
@@ -96,7 +96,7 @@ This method is based on Dnsmasq's tag feature. It can assign gateway and DNS ser
 
 Go back to the page where you fixed the IP address. Edit the static lease entry you just configured, find `Tag`, and add one, such as `directnode`. The tag name must not contain spaces or special characters. Save and apply.
 
-![](https://img.pyaxy.com/img/20260307011039057.png)
+![](20260307011039057.png)
 
 Enter the OpenWrt command-line page and run the following commands:
 
@@ -175,4 +175,4 @@ exit 0
 
 At this point, all traffic from your device should no longer enter the Clash core, and fake-ip should no longer affect pinging domain names either 😄.
 
-![](https://img.pyaxy.com/img/20260307014933623.png)
+![](20260307014933623.png)
