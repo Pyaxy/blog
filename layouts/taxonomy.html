@@ -1,0 +1,19 @@
+{{- define "main" }}
+{{- if .Title }}
+<header class="page-header">
+  <h1>{{ .Title }}</h1>
+  {{- with .Description }}
+  <div class="post-description">{{ . }}</div>
+  {{- end }}
+</header>
+{{- end }}
+
+<ul class="terms-tags">
+  {{- range partial "listed_pages.html" .Pages.ByTitle }}
+  {{- $members := where .RegularPages "Section" "ne" "private" }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .LinkTitle }} <sup><strong><sup>{{ len $members }}</sup></strong></sup></a>
+  </li>
+  {{- end }}
+</ul>
+{{- end }}

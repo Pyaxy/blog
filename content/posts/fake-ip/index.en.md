@@ -9,8 +9,11 @@ categories = ["Networking"]
 series = []
 
 [params]
-  showTableOfContents = true
+  ShowToc = true
   showReadingTime = true
+
+[params.cover]
+  image = "featured.jpg"
 +++
 
 # Background

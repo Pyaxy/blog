@@ -1,0 +1,267 @@
+:root {
+  --theme: #faf9f5;
+  --entry: #faf9f5;
+  --primary: #141413;
+  --secondary: #6b6a65;
+  --tertiary: #e8e6dc;
+  --content: #2b2a27;
+  --border: #e8e6dc;
+  --main-width: 680px;
+  --accent: #d97757;
+  --reading-font: "Source Serif 4", "Noto Serif SC", Georgia, serif;
+}
+
+/* Current PaperMod uses a data attribute for its theme switch. */
+:root[data-theme="dark"] {
+  --theme: #1f1e1d;
+  --entry: #1f1e1d;
+  --primary: #f0eee6;
+  --secondary: #a3a199;
+  --content: #d9d7cd;
+  --border: #353432;
+}
+
+html {
+  background: var(--theme);
+}
+
+body,
+:root[data-theme] body.list {
+  background: var(--theme);
+}
+
+body > .header,
+body > .main,
+body > .footer {
+  position: relative;
+  z-index: 1;
+}
+
+#pond-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.home-info .entry-content p:last-child::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-inline-start: 0.3em;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: terminal-caret 1.2s steps(1, end) infinite;
+}
+
+@keyframes terminal-caret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+:root[data-theme-reveal]::view-transition-group(root),
+:root[data-theme-reveal]::view-transition-old(root) {
+  animation: none;
+}
+
+:root[data-theme-reveal]::view-transition-old(root),
+:root[data-theme-reveal]::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
+
+:root[data-theme-reveal]::view-transition-old(root) {
+  z-index: 1;
+}
+
+:root[data-theme-reveal]::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-circle 800ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes theme-circle {
+  from {
+    clip-path: circle(0 at var(--theme-reveal-x) var(--theme-reveal-y));
+  }
+  to {
+    clip-path: circle(var(--theme-reveal-radius) at var(--theme-reveal-x) var(--theme-reveal-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-info .entry-content p:last-child::after {
+    animation: none;
+    opacity: 0.65;
+  }
+}
+
+@media (forced-colors: active) {
+  #pond-canvas {
+    display: none;
+  }
+}
+
+body {
+  font-family: var(--reading-font);
+  line-height: 1.8;
+}
+
+.post-content,
+.entry-content {
+  line-height: 1.8;
+}
+
+h1,
+h2,
+h3,
+.post-title,
+.entry-header h1,
+.entry-header h2 {
+  font-family: var(--reading-font);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* PaperMod otherwise draws inline links with a box shadow. */
+.post-content a:not(.anchor) {
+  box-shadow: none;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+}
+
+.logo a > svg {
+  width: 3.6rem;
+  height: 2.5rem;
+}
+
+.logo .letter {
+  fill: var(--primary);
+}
+
+.home-info {
+  min-height: 0;
+  margin: 16px 0 28px;
+  padding: 8px 0 20px;
+}
+
+.home-info .entry-content p {
+  margin-block: 10px;
+}
+
+/* Keep list entries focused on the text, with a small cover at the side. */
+.post-entry {
+  margin: 0;
+  padding: 24px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  transition: none;
+}
+
+.post-entry:hover,
+.post-entry:focus-within {
+  transform: none;
+  border-color: var(--border);
+}
+
+.post-entry:not(.tag-entry):has(.entry-cover) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 136px;
+  grid-template-areas:
+    "title cover"
+    "summary cover"
+    "meta cover";
+  column-gap: 24px;
+  row-gap: 8px;
+}
+
+.post-entry .entry-header {
+  grid-area: title;
+  min-width: 0;
+}
+
+.post-entry .entry-header h2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 22px;
+  line-height: 1.45;
+}
+
+.post-entry .entry-content {
+  grid-area: summary;
+  margin: 0;
+}
+
+.post-entry .entry-footer {
+  grid-area: meta;
+  line-height: 1.7;
+}
+
+.post-entry .entry-cover {
+  grid-area: cover;
+  align-self: start;
+  width: 136px;
+  aspect-ratio: 4 / 3;
+  margin: 4px 0 0;
+}
+
+.post-entry .entry-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.post-entry .entry-link {
+  border-radius: 0;
+}
+
+.post-entry .entry-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .home-info {
+    margin-block: 8px 18px;
+    padding-bottom: 12px;
+  }
+
+  .post-entry {
+    padding-block: 20px;
+  }
+
+  .post-entry:not(.tag-entry):has(.entry-cover) {
+    grid-template-columns: minmax(0, 1fr) 88px;
+    column-gap: 16px;
+  }
+
+  .post-entry .entry-cover {
+    width: 88px;
+  }
+
+  .post-entry .entry-header h2 {
+    -webkit-line-clamp: 3;
+    font-size: 19px;
+    line-height: 1.5;
+  }
+
+  .post-entry .entry-footer {
+    font-size: 12px;
+  }
+}

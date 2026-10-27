@@ -1,0 +1,11 @@
+{{- /* Hugo can retain taxonomy terms after every member has been unlisted. */ -}}
+{{- $listed := slice -}}
+{{- range . -}}
+  {{- if ne .Section "private" -}}
+    {{- $publicMembers := where .RegularPages "Section" "ne" "private" -}}
+    {{- if or (ne .Kind "term") (gt (len $publicMembers) 0) -}}
+      {{- $listed = $listed | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $listed -}}

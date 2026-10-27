@@ -9,8 +9,11 @@ categories = ["Logs"]
 series = []
 
 [params]
-  showTableOfContents = true
+  ShowToc = true
   showReadingTime = true
+
+[params.cover]
+  image = "featured.jpg"
 +++
 
 # 写在前面

@@ -9,8 +9,11 @@ categories = ["Networking"]
 series = []
 
 [params]
-  showTableOfContents = true
+  ShowToc = true
   showReadingTime = true
+
+[params.cover]
+  image = "featured.jpg"
 +++
 # 介绍
 美国的电话卡，无需KYC，国内只能使用AT&T的网络，包含100分钟通话、100条短信、1G流量，都是国际范围内可用的，实测用来注册美区Google账号非常丝滑，即使弹出手机号验证也是可以通过的。
