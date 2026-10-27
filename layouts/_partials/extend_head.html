@@ -1,0 +1,20 @@
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+{{- if and (eq .Kind "term") (eq (len (where .RegularPages "Section" "ne" "private")) 0) }}
+<meta name="robots" content="noindex, nofollow">
+{{- end }}
+
+{{- $icons := dict }}
+{{- range slice "light" "dark" }}
+  {{- $svg := resources.Get (printf "branding/pyaxy/%s/favicon.svg" .) | fingerprint }}
+  {{- $png16 := resources.Get (printf "branding/pyaxy/%s/favicon-16x16.png" .) | fingerprint }}
+  {{- $png32 := resources.Get (printf "branding/pyaxy/%s/favicon-32x32.png" .) | fingerprint }}
+  {{- $icons = merge $icons (dict . (dict "svg" $svg.RelPermalink "png16" $png16.RelPermalink "png32" $png32.RelPermalink)) }}
+{{- end }}
+{{- $branding := resources.Get "js/branding.js" | resources.ExecuteAsTemplate "assets/js/branding.js" $icons | minify | fingerprint }}
+<script defer src="{{ $branding.RelPermalink }}" integrity="{{ $branding.Data.Integrity }}" crossorigin="anonymous"></script>
+
+{{- $pondCore := resources.Get "js/pond.js" | js.Build (dict "targetPath" "assets/js/pond-core.js" "minify" true "target" "es2020") }}
+{{- $license := resources.Get "js/vendor/ascii-pond/LICENSE" }}
+{{- $notice := resources.FromString "assets/js/pond-license.js" (printf "/*!\n%s\n*/\n" $license.Content) }}
+{{- $pond := slice $notice $pondCore | resources.Concat "assets/js/pond.js" | fingerprint }}
+<script defer src="{{ $pond.RelPermalink }}" integrity="{{ $pond.Data.Integrity }}" crossorigin="anonymous"></script>

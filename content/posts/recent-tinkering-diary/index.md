@@ -9,8 +9,11 @@
 "series" = []
 
 [params]
-"showTableOfContents" = true
+"ShowToc" = true
 "showReadingTime" = true
+
+[params.cover]
+  image = "featured.jpg"
 +++
 最终效果：实现了在极低的配置里运行媒体库，媒体库支持4k蓝光原盘视频播放，可以做到秒开，支持全国任何有网的地点访问，播放时服务器负载极低，见图2。
 

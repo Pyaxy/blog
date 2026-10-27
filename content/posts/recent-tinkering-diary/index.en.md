@@ -9,8 +9,11 @@
 "series" = []
 
 [params]
-"showTableOfContents" = true
+"ShowToc" = true
 "showReadingTime" = true
+
+[params.cover]
+  image = "featured.jpg"
 +++
 The end result: a media library running on extremely modest hardware, with support for playing original 4K Blu-ray files that start instantly. It is accessible from anywhere in the country with an internet connection, and the server load stays extremely low during playback. See image 2.
 
