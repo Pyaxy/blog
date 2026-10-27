@@ -1,0 +1,25 @@
+{{- /* Resolve the resource itself: translated pages may share one bundle image URL. */ -}}
+{{- $image := .Params.cover.image | default "" -}}
+{{- $url := "" -}}
+{{- if $image -}}
+  {{- $url = $image | absURL -}}
+  {{- $u := urls.Parse $image -}}
+  {{- if and (not $u.IsAbs) (not (strings.HasPrefix $image "/")) -}}
+    {{- $path := strings.TrimPrefix "./" $u.Path -}}
+    {{- $resource := or (.Resources.Get $path) (resources.Get $path) -}}
+    {{- if $resource -}}
+      {{- $url = $resource.Permalink -}}
+    {{- else if .Params.cover.relative -}}
+      {{- $url = (path.Join .RelPermalink $u.Path) | absURL -}}
+    {{- end -}}
+    {{- if or $resource .Params.cover.relative -}}
+      {{- with $u.RawQuery -}}
+        {{- $url = printf "%s?%s" $url . -}}
+      {{- end -}}
+      {{- with $u.Fragment -}}
+        {{- $url = printf "%s#%s" $url . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $url -}}
