@@ -1,0 +1,18 @@
+{{- if eq .Type "alert" -}}
+  {{- $title := .AlertTitle | default (or (i18n (printf "callout_%s" .AlertType)) (title .AlertType)) -}}
+  {{- if .AlertSign -}}
+<details class="callout callout-{{ .AlertType }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+  <summary class="callout-title">{{ $title }}</summary>
+  <div class="callout-body">{{ .Text }}</div>
+</details>
+  {{- else -}}
+<div class="callout callout-{{ .AlertType }}">
+  <p class="callout-title">{{ $title }}</p>
+  <div class="callout-body">{{ .Text }}</div>
+</div>
+  {{- end -}}
+{{- else -}}
+<blockquote{{ range $key, $value := .Attributes }}{{ printf " %s=%q" $key $value | safeHTMLAttr }}{{ end }}>
+  {{ .Text }}
+</blockquote>
+{{- end -}}

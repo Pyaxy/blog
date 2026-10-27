@@ -6,3 +6,21 @@
 
 - id: post_navigation
   translation: "Article navigation"
+
+- id: callout_note
+  translation: "Note"
+
+- id: callout_info
+  translation: "Info"
+
+- id: callout_tip
+  translation: "Tip"
+
+- id: callout_warning
+  translation: "Warning"
+
+- id: callout_caution
+  translation: "Caution"
+
+- id: callout_important
+  translation: "Important"

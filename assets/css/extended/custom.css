@@ -179,6 +179,44 @@ samp {
   font-style: normal;
 }
 
+.post-content .callout {
+  margin: 1.5em 0;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 6px;
+  background: var(--nav-hover);
+  background: color-mix(in srgb, var(--accent) 6%, var(--theme));
+  color: var(--content);
+  font-size: 0.95em;
+}
+
+.post-content .callout-title {
+  margin: 0 0 6px;
+  color: var(--primary);
+  font-family: var(--ui-font);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.callout-body > :first-child {
+  margin-top: 0;
+}
+
+.callout-body > :last-child {
+  margin-bottom: 0;
+}
+
+.post-content details.callout > summary {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.post-content details.callout[open] > summary {
+  margin-bottom: 10px;
+}
+
 h1,
 h2,
 h3,

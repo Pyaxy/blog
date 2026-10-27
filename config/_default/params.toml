@@ -11,6 +11,7 @@ ShowCodeCopyButtons = true
 ShowPostNavLinks = true
 ShowBreadCrumbs = false
 ShowToc = false
+UseHugoToc = true
 ShowShareButtons = false
 ShowRssButtonInSectionTermList = true
 
