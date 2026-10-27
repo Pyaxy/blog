@@ -1,10 +1,10 @@
 +++
-title = "[Tutorial] Allowlisting an IP with Cloudflare Free Bot Fight Mode: A Pitfall Log"
+title = "Allowlisting an IP in Cloudflare Free Bot Fight Mode"
 date = "2026-08-28"
 draft = false
 description = ""
 summary = "When a WAF custom rule cannot bypass Free Bot Fight Mode, an IP Access Rule can allowlist a trusted static egress IP."
-tags = ["Cloudflare", "Bot Fight Mode", "WAF", "Komari"]
+tags = ["Cloudflare", "Bot Fight Mode", "WAF", "Komari", "Tutorial"]
 categories = ["Networking"]
 series = []
 

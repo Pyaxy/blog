@@ -1,10 +1,10 @@
 +++
-title = "[Tutorial] Because I Could Not Afford More Storage, I Built a Home Media Library with a Raspberry Pi, 115 Cloud Drive, and Strm Files: A Pitfall Log"
+title = "Building a Home Media Library with Raspberry Pi, 115, and STRM"
 date = "2026-01-30"
 draft = false
 description = ""
 summary = "After quite a bit of tinkering, I managed to deploy an Emby setup on a lightweight server that can play 4K Blu-ray remux movies."
-tags = ["Emby", "Docker", "115 Cloud Drive", "Raspberry Pi", "OpenList"]
+tags = ["Emby", "Docker", "115 Cloud Drive", "Raspberry Pi", "OpenList", "Tutorial"]
 categories = ["Projects"]
 series = []
 

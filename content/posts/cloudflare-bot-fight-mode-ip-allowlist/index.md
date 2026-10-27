@@ -1,10 +1,10 @@
 +++
-title = "【教程】Cloudflare 免费版 Bot Fight Mode 如何添加 IP 白名单（踩坑实录）"
+title = "为 Cloudflare 免费版 Bot Fight Mode 添加 IP 白名单"
 date = "2026-08-28"
 draft = false
 description = ""
 summary = "WAF 自定义规则无法跳过免费版 Bot Fight Mode 时，可以通过 IP Access Rule 放行固定出口 IP。"
-tags = ["Cloudflare", "Bot Fight Mode", "WAF", "Komari"]
+tags = ["Cloudflare", "Bot Fight Mode", "WAF", "Komari", "教程"]
 categories = ["Networking"]
 series = []
 

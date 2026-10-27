@@ -1,10 +1,10 @@
 +++
-title = "【教程】因为买不起内存，我使用了树莓派+115网盘+Strm搭建了家庭影音库（踩坑实录）"
+title = "用树莓派、115 网盘和 STRM 搭建家庭影音库"
 date = "2026-01-30"
 draft = false 
 description = ""
 summary = "经过一番折腾，我实现了在轻量服务器上部署可以播放4K蓝光原盘电影的Emby项目。"
-tags = ["Emby", "Docker", "115网盘", "树莓派", "OpenList"]
+tags = ["Emby", "Docker", "115网盘", "树莓派", "OpenList", "教程"]
 categories = ["Projects"]
 series = []
 

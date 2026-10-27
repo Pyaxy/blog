@@ -1,0 +1,8 @@
+- id: prev_post
+  translation: "Previous article"
+
+- id: next_post
+  translation: "Next article"
+
+- id: post_navigation
+  translation: "Article navigation"
