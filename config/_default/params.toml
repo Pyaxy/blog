@@ -4,7 +4,9 @@ disableThemeToggle = false
 displayFullLangName = true
 
 ShowReadingTime = true
-ShowWordCount = true
+ShowWordCount = false
+hideAuthor = true
+hideSummary = true
 ShowCodeCopyButtons = true
 ShowPostNavLinks = true
 ShowBreadCrumbs = false
@@ -19,8 +21,10 @@ ShowRssButtonInSectionTermList = true
   apple_touch_icon = "/apple-touch-icon.png"
   safari_pinned_tab = "/favicon.svg"
   theme_color = "#faf9f5"
+  msapplication_TileColor = "#faf9f5"
 
 [cover]
+  hiddenInList = true
   responsiveImages = true
   linkFullImages = false
 

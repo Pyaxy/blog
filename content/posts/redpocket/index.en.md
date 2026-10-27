@@ -1,5 +1,5 @@
 +++
-title = "[eSIM] Redpocket Annual $30 Plan Purchase and Activation Notes"
+title = "Buying and Activating Redpocket’s $30 Annual eSIM Plan"
 date = "2026-05-28"
 draft = false
 description = ""

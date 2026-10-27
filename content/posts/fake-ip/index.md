@@ -1,10 +1,10 @@
 +++
-title = "【教程】Openclash在fake-ip的Dnsmasq转发模式下根据设备MAC让其流量绕过内核"
+title = "让 OpenClash 在 fake-ip 模式下按设备 MAC 绕过内核"
 date = "2026-03-07"
 draft = false
 description = ""
 summary = "实现了openclash在fake-ip的Dnsmasq转发下按设备走代理"
-tags = ["Openclash", "软路由"]
+tags = ["Openclash", "软路由", "教程"]
 categories = ["Networking"]
 series = []
 

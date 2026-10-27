@@ -1,10 +1,10 @@
 +++
-title = "[Tutorial] Let OpenClash in fake-ip Dnsmasq Forwarding Mode Bypass the Kernel by Device MAC"
+title = "Bypassing the OpenClash Kernel by Device MAC in fake-ip Mode"
 date = "2026-03-07"
 draft = false
 description = ""
 summary = "Implemented per-device proxy routing in OpenClash under fake-ip with Dnsmasq forwarding."
-tags = ["OpenClash", "Soft Router"]
+tags = ["OpenClash", "Soft Router", "Tutorial"]
 categories = ["Networking"]
 series = []
 

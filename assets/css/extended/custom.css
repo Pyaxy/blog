@@ -8,7 +8,13 @@
   --border: #e8e6dc;
   --main-width: 680px;
   --accent: #d97757;
+  --meta: #6b6a65;
+  --nav-hover: #f1efe8;
+  --code-bg: var(--nav-hover);
+  --code-block-bg: var(--nav-hover);
+  --inline-code: #8e2626;
   --reading-font: "Source Serif 4", "Noto Serif SC", Georgia, serif;
+  --ui-font: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 /* Current PaperMod uses a data attribute for its theme switch. */
@@ -17,8 +23,14 @@
   --entry: #1f1e1d;
   --primary: #f0eee6;
   --secondary: #a3a199;
+  --tertiary: #353432;
   --content: #d9d7cd;
   --border: #353432;
+  --meta: #96948d;
+  --nav-hover: #292826;
+  --code-bg: var(--nav-hover);
+  --code-block-bg: var(--nav-hover);
+  --inline-code: #ec7e7e;
 }
 
 html {
@@ -104,13 +116,67 @@ body > .footer {
 }
 
 body {
-  font-family: var(--reading-font);
-  line-height: 1.8;
+  font-family: var(--ui-font);
+  line-height: 1.7;
+  text-autospace: normal;
 }
 
-.post-content,
-.entry-content {
-  line-height: 1.8;
+pre,
+code,
+kbd,
+samp {
+  text-autospace: no-autospace;
+}
+
+::selection {
+  background: rgba(217, 119, 87, 0.3);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.post-content {
+  font-family: var(--reading-font);
+  line-height: 1.85;
+}
+
+.post-content p {
+  text-wrap: pretty;
+}
+
+.post-content :not(pre) > code {
+  color: var(--inline-code);
+}
+
+.post-content pre code {
+  color: var(--content);
+}
+
+:root[data-theme] .chroma .err {
+  color: var(--inline-code);
+  background: transparent;
+}
+
+.post-content .copy-code {
+  border: 1px solid var(--border);
+  background: var(--theme);
+  color: var(--secondary);
+}
+
+:root details.toc {
+  background: var(--theme);
+  transition: background-color 160ms ease;
+}
+
+:root details.toc:hover,
+:root details.toc:focus-within {
+  background: var(--nav-hover);
+}
+
+.post-content blockquote {
+  margin-inline: 0;
+  padding-inline: 1.1em 0;
+  border-inline-start: 2px solid var(--accent);
+  color: var(--secondary);
+  font-style: normal;
 }
 
 h1,
@@ -120,8 +186,14 @@ h3,
 .entry-header h1,
 .entry-header h2 {
   font-family: var(--reading-font);
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.post-content h2,
+.post-content h3 {
+  font-weight: 500;
 }
 
 a {
@@ -150,20 +222,35 @@ a:hover {
   fill: var(--primary);
 }
 
+.logo a {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.menu a,
+.lang-menu a {
+  font-size: 14px;
+}
+
 .home-info {
   min-height: 0;
-  margin: 16px 0 28px;
-  padding: 8px 0 20px;
+  margin: 24px 0 32px;
+  padding: 8px 0 24px;
+}
+
+.home-info .entry-header h1 {
+  font-size: 48px;
+  line-height: 1.15;
 }
 
 .home-info .entry-content p {
   margin-block: 10px;
 }
 
-/* Keep list entries focused on the text, with a small cover at the side. */
+/* Text-only index, separated by rules. */
 .post-entry {
   margin: 0;
-  padding: 24px 0;
+  padding: 24px 0 22px;
   border: 0;
   border-bottom: 1px solid var(--border);
   border-radius: 0;
@@ -177,54 +264,34 @@ a:hover {
   border-color: var(--border);
 }
 
-.post-entry:not(.tag-entry):has(.entry-cover) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 136px;
-  grid-template-areas:
-    "title cover"
-    "summary cover"
-    "meta cover";
-  column-gap: 24px;
-  row-gap: 8px;
-}
-
 .post-entry .entry-header {
-  grid-area: title;
   min-width: 0;
 }
 
 .post-entry .entry-header h2 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  font-size: 22px;
-  line-height: 1.45;
+  display: block;
+  font-family: var(--ui-font);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
 }
 
 .post-entry .entry-content {
-  grid-area: summary;
-  margin: 0;
+  margin: 8px 0 0;
+}
+
+.post-entry .entry-footer,
+.post-meta {
+  color: var(--meta);
+  font-family: var(--ui-font);
+  font-size: 13px;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
 }
 
 .post-entry .entry-footer {
-  grid-area: meta;
-  line-height: 1.7;
-}
-
-.post-entry .entry-cover {
-  grid-area: cover;
-  align-self: start;
-  width: 136px;
-  aspect-ratio: 4 / 3;
-  margin: 4px 0 0;
-}
-
-.post-entry .entry-cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
+  margin-top: 9px;
 }
 
 .post-entry .entry-link {
@@ -234,6 +301,105 @@ a:hover {
 .post-entry .entry-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
+}
+
+.post-tags {
+  gap: 8px 16px;
+  margin: 0 0 24px;
+}
+
+.post-tags a {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--secondary);
+  font-family: var(--reading-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  text-decoration: underline;
+  text-decoration-color: var(--secondary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.post-tags a:hover {
+  background: transparent;
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.paginav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-block: 28px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  line-height: 1.6;
+}
+
+.paginav a {
+  width: auto;
+  min-width: 0;
+  min-height: 140px;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--theme);
+  color: var(--primary);
+  transition: background-color 160ms ease;
+}
+
+.paginav a:hover,
+.paginav a:focus-visible {
+  background: var(--nav-hover);
+  color: var(--primary);
+}
+
+.paginav .title {
+  font-family: var(--ui-font);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.paginav .post-nav-title {
+  font-family: var(--ui-font);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+.paginav span:hover:not(.title) {
+  text-decoration: none;
+}
+
+.paginav .next {
+  grid-column: 2;
+  margin-inline-start: 0;
+  text-align: start;
+}
+
+.paginav a:only-child {
+  grid-column: 1 / -1;
+}
+
+.post-tags a:focus-visible,
+.paginav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.footer {
+  color: var(--meta);
+  text-align: start;
 }
 
 @media (max-width: 600px) {
@@ -246,22 +412,33 @@ a:hover {
     padding-block: 20px;
   }
 
-  .post-entry:not(.tag-entry):has(.entry-cover) {
-    grid-template-columns: minmax(0, 1fr) 88px;
-    column-gap: 16px;
-  }
-
-  .post-entry .entry-cover {
-    width: 88px;
+  .home-info .entry-header h1 {
+    font-size: 40px;
   }
 
   .post-entry .entry-header h2 {
-    -webkit-line-clamp: 3;
     font-size: 19px;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 
-  .post-entry .entry-footer {
-    font-size: 12px;
+  .paginav {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .paginav a {
+    min-height: 112px;
+    padding: 18px;
+  }
+
+  .paginav .next {
+    grid-column: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paginav a,
+  :root details.toc {
+    transition: none;
   }
 }

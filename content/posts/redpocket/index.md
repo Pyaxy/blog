@@ -1,5 +1,5 @@
 +++
-title = "【eSIM】Redpocket(红包卡) 30$每年 购买激活记录"
+title = "Redpocket 30 美元年费 eSIM 的购买与激活"
 date = "2026-05-28"
 draft = false 
 description = ""

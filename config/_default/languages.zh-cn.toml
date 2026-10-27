@@ -7,7 +7,7 @@ title = "Pyaxy的博客"
 [params]
   author = "Pyaxy"
   description = "Pyaxy的折腾记录"
-  DateFormat = "2006-01-2"
+  DateFormat = "2006-01-02"
 
 [params.homeInfoParams]
   Title = "Pyaxy"
