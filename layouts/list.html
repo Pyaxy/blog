@@ -63,6 +63,10 @@
 {{- $class = "post-entry tag-entry" }}
 {{- end }}
 
+{{- if $.IsHome }}
+{{- $class = printf "%s home-post-entry" $class }}
+{{- end }}
+
 <article class="{{ $class }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
