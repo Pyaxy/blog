@@ -16,6 +16,11 @@ series = []
   image = "featured.jpg"
 +++
 
+> 2026-10-31 update:
+>
+> 1. Added limitations of the `Source Traffic Access Control` settings
+> 2. Added configuration for ICMP to bypass the core
+
 # Background
 
 I recently bought a new soft router and configured OpenClash as a whole-home proxy. However, the network environment I use when developing on my Mac changes frequently, and I also use Surge for rewrite rules. After all, if my entire home network already uses OpenClash, then did I buy Surge for nothing? 😭 In the end, my goal was still to let Surge take over proxy handling on my computer.
@@ -30,7 +35,7 @@ In Dnsmasq mode, the most common way to control whether a device uses the proxy 
 
 ```yaml
 rules:
-	SRC-IP-CIDR,192.168.1.23/32,DIRECT
+	- SRC-IP-CIDR,192.168.1.23/32,DIRECT
 ```
 
 This does make a specific device avoid the proxy, but the downside is also obvious. Although the specific device does not use the proxy, its traffic still enters the kernel, gets unpacked, and is then wrapped and forwarded according to rules. This still increases kernel load.
@@ -48,11 +53,11 @@ Therefore, whether using Dnsmasq forwarding or firewall forwarding, neither can 
 
 While implementing the goal above, I referred to the following links:
 
-[openclash的基础设置，实现全屋代理](https://github.com/Aethersailor/Custom_OpenClash_Rules/wiki/OpenClash-%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%A1%88)
+[Basic OpenClash Setup for a Whole-Home Proxy](https://github.com/Aethersailor/Custom_OpenClash_Rules/wiki/OpenClash-%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%A1%88)
 
-[# OpenWrt 使用 Tag 给特定的设备单独指定旁路网关的地址和 DNS](https://blog.hellowood.dev/posts/openwrt-%E4%BD%BF%E7%94%A8-tag-%E7%BB%99%E7%89%B9%E5%AE%9A%E7%9A%84%E8%AE%BE%E5%A4%87%E5%8D%95%E7%8B%AC%E6%8C%87%E5%AE%9A%E6%97%81%E8%B7%AF%E7%BD%91%E5%85%B3%E7%9A%84%E5%9C%B0%E5%9D%80%E5%92%8C-dns/)
+[# Use Tags in OpenWrt to Assign a Side Router Gateway Address and DNS to Specific Devices](https://blog.hellowood.dev/posts/openwrt-%E4%BD%BF%E7%94%A8-tag-%E7%BB%99%E7%89%B9%E5%AE%9A%E7%9A%84%E8%AE%BE%E5%A4%87%E5%8D%95%E7%8B%AC%E6%8C%87%E5%AE%9A%E6%97%81%E8%B7%AF%E7%BD%91%E5%85%B3%E7%9A%84%E5%9C%B0%E5%9D%80%E5%92%8C-dns/)
 
-[OpenClash 在 Dnsmasq 转发模式下基于 MAC 绕过设备](https://kasuha.com/posts/openclash-dns-forward-bypass-by-mac/)
+[Bypass Devices by MAC in OpenClash's Dnsmasq Forwarding Mode](https://kasuha.com/posts/openclash-dns-forward-bypass-by-mac/)
 
 # Integrated Implementation
 
@@ -62,8 +67,13 @@ Here is the system information of my soft router when this tutorial was written:
 
 - Firmware version: ImmortalWrt 24.10.4 r33602-e717d133ed6d / LuCI openwrt-24.10 branch 25.300.72106~0418b54
 - Kernel version: 6.6.110
-- Clash core version: **alpha-g86257fc**
-- OpenClash client version: **v0.47.055**
+- Clash core version: **alpha-gbc76c13**
+- OpenClash client version: **v0.48.002**
+- IPv6 enabled: No
+
+> [!info] Note
+>
+> This setup configures only IPv4. When enabling IPv6 proxying, IPv6 bypass must be configured separately.
 
 **If you find that some Web UI elements do not match during implementation, search for the equivalent operation method for your own system version.**
 
@@ -80,6 +90,8 @@ For `MAC address`, select the device's MAC address. For `IPv4 address`, enter th
 ## Modify Source Traffic Access Control
 
 Go to the OpenClash homepage, select `Plugin Settings`, scroll to the bottom, and in the Source Traffic Access Control settings area, add a new entry. Set `Internal Address` to the fixed IP address from earlier, leave `Port` empty, set `Protocol` to `All`, and set `Target` to `RETURN`. After finishing, click `Apply Configuration` at the bottom.
+
+> Note that comments for added configuration entries must not contain Chinese characters. OpenClash inserts the comments directly into the configuration, and Chinese characters will cause configuration validation to fail.
 
 After this setup, traffic from the device to real-ip addresses will bypass the kernel directly. However, the device needs DNS first in order to obtain real-ip addresses. If the device's DNS server address is still set to the router gateway address, the kernel will still hijack DNS requests and return fake-ip addresses. Source Traffic Access Control will not make traffic to fake-ip addresses bypass the kernel. Therefore, in the next step, we need to set the device's DNS server.
 
@@ -128,43 +140,38 @@ Go to the OpenClash homepage, click `Plugin Settings`, then click `Developer Opt
 
 Paste the overwrite code below and fill in the specific device MAC addresses. This code maintains a set of MAC addresses that should bypass Clash, so packets matching the set are passed through directly during DNS hijacking.
 
+In addition, this code also allows ICMP and other packets from the target devices to pass through.
+
 > [!warning]
-> The code below modifies a firewall based on `nftables`. If you are using an `iptables` firewall, some syntax may not apply. You can ask AI to help convert the syntax.
+> The code below modifies a firewall based on `nftables`. If you are using an `iptabls` firewall, some syntax may not apply. You can ask AI to help convert the syntax.
 
 ```bash
 #!/bin/sh
-. /usr/share/openclash/ruby.sh
 . /usr/share/openclash/log.sh
 . /lib/functions.sh
 
 # This script is called by /etc/init.d/openclash
-# Add your custom overwrite scripts here, they will be take effict after the OpenClash own srcipts
+# Add your custom firewall rules here, they will be added after the end of the OpenClash iptables rules
 
-LOG_OUT "Tip: Start Running Custom Overwrite Scripts..."
-LOGTIME=$(echo $(date "+%Y-%m-%d %H:%M:%S"))
-LOG_FILE="/tmp/openclash.log"
-#Config Path
-CONFIG_FILE="$1"
-    sleep 20
-    LOG_OUT "Tip: Start Add Custom Firewall Rules..."
-    # >>> Fill in the MAC addresses of devices that need to bypass Clash here, separated by spaces
+LOG_OUT "Tip: Start Add Custom Firewall Rules..."
+    # >>> 在这里填需要绕过 Clash 的设备 MAC，空格分隔 
     MACS="aa:bb:cc:dd:ee:ff"
 
-    # 1) Set: lan_bypass_macs. Flush it if it exists to ensure repeatable execution.
+    # 1) 集合：lan_bypass_macs（存在则清空，确保可重复执行）
     if nft list set inet fw4 lan_bypass_macs >/dev/null 2>&1; then
       nft flush set inet fw4 lan_bypass_macs || :
     else
       nft add set inet fw4 lan_bypass_macs '{ type ether_addr; flags interval; }' || :
     fi
 
-    # Populate the set
+    # 填充集合
     for mac in $MACS; do
-      # Normalize to lowercase
+      # 正规化为小写
       m=$(echo "$mac" | tr 'A-F' 'a-f')
       nft add element inet fw4 lan_bypass_macs "{ $m }" 2>/dev/null || :
     done
 
-    # 2) Delete all old "ether saddr @lan_bypass_macs return" rules, then insert one at the top of the chain
+    # 2) 删除所有旧的“ether saddr @lan_bypass_macs return”，再插到链首
     nft -a list chain inet fw4 dstnat 2>/dev/null | awk '
       /ether saddr @lan_bypass_macs/ && / return/ {
         for (i=1;i<=NF;i++) if ($i=="handle") {print $(i+1)}
@@ -172,8 +179,26 @@ CONFIG_FILE="$1"
         [ -n "$h" ] && nft delete rule inet fw4 dstnat handle "$h" 2>/dev/null || :
       done
     nft insert rule inet fw4 dstnat ether saddr @lan_bypass_macs return || :
+    # 3) 按同一组 MAC 绕过 mangle 链，覆盖 UDP、ICMP
+    # MAC UDP/ICMP bypass: remove old matching rules before inserting at chain head.
+    if nft list chain inet fw4 openclash_mangle >/dev/null 2>&1; then
+      nft -a list chain inet fw4 openclash_mangle 2>/dev/null | awk '
+        /ether saddr @lan_bypass_macs/ && / return/ {
+          for (i=1;i<=NF;i++) if ($i=="handle") {print $(i+1)}
+        }' | while read -r h; do
+          [ -n "$h" ] && nft delete rule inet fw4 openclash_mangle handle "$h" 2>/dev/null || :
+        done
+      nft insert rule inet fw4 openclash_mangle ether saddr @lan_bypass_macs counter return || {
+        LOG_OUT "Error: MAC UDP/ICMP bypass rule failed."
+        exit 1
+      }
+    else
+      LOG_OUT "Warning: openclash_mangle is unavailable; MAC UDP/ICMP bypass skipped."
+    fi
+
     LOG_OUT "Done: MAC bypass rules loaded."
 exit 0
+
 ```
 
 At this point, all traffic from your device should no longer enter the Clash core, and fake-ip should no longer affect pinging domain names either 😄.
