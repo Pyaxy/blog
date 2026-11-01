@@ -1,0 +1,68 @@
+{{- define "main" -}}
+{{- $data := hugo.Data.friends | default dict -}}
+{{- $links := $data.links | default slice -}}
+<article class="post-single friends-page">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- with .Description }}
+    <div class="post-description">{{ . }}</div>
+    {{- end }}
+  </header>
+
+  {{- if $links }}
+  <ul class="friends-list" role="list">
+    {{- range $links }}
+      {{- if or (not .name) (not .url) -}}
+        {{- errorf "data/friends.yaml: each link needs a name and url" -}}
+      {{- end -}}
+      {{- $url := urls.Parse .url -}}
+      {{- if not (and (in (slice "https" "http") $url.Scheme) $url.Host) -}}
+        {{- errorf "data/friends.yaml: %q needs a complete https:// or http:// URL" .name -}}
+      {{- end -}}
+      {{- $name := .name -}}
+      {{- $description := .description | default "" -}}
+      {{- if eq $.Language.Lang "en" -}}
+        {{- $name = .name_en | default $name -}}
+        {{- $description = .description_en | default $description -}}
+      {{- end }}
+    <li class="friend-entry">
+      <a class="friend-link" href="{{ .url }}" target="_blank" rel="noopener noreferrer external">
+        <span class="friend-heading">
+          <span class="friend-name">{{ $name }}</span>
+          <span class="friend-arrow" aria-hidden="true">↗</span>
+        </span>
+        {{- with $description }}
+        <span class="friend-description">{{ . }}</span>
+        {{- end }}
+        <span class="friend-domain">{{ strings.TrimPrefix "www." $url.Host }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+  {{- else }}
+  <p class="friends-empty">{{ i18n "friends_empty" }}</p>
+  {{- end }}
+
+  <section class="friends-self" aria-labelledby="friends-self-title">
+    <h2 id="friends-self-title">{{ i18n "friends_site_info" }}</h2>
+    <dl class="friends-site-info">
+      <div>
+        <dt>{{ i18n "friends_name" }}</dt>
+        <dd>{{ site.Title }}</dd>
+      </div>
+      {{- with $data.site.url }}
+      <div>
+        <dt>{{ i18n "friends_url" }}</dt>
+        <dd><a href="{{ . }}">{{ . }}</a></dd>
+      </div>
+      {{- end }}
+      {{- with site.Params.homeInfoParams.Content }}
+      <div>
+        <dt>{{ i18n "friends_description" }}</dt>
+        <dd>{{ . | markdownify | plainify }}</dd>
+      </div>
+      {{- end }}
+    </dl>
+  </section>
+</article>
+{{- end -}}
