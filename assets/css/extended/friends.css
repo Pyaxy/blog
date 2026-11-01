@@ -1,0 +1,136 @@
+.friends-page .post-description {
+  color: var(--secondary);
+  line-height: 1.8;
+}
+
+.friends-list {
+  margin: 32px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+
+.friend-entry {
+  border-bottom: 1px solid var(--border);
+}
+
+.friend-link {
+  display: block;
+  padding: 24px 0;
+  color: var(--primary);
+}
+
+.friend-link:hover {
+  color: var(--primary);
+}
+
+.friend-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.friend-name {
+  font-family: var(--ui-font);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.friend-arrow {
+  flex: none;
+  color: var(--meta);
+  font-size: 18px;
+}
+
+.friend-link:hover .friend-name,
+.friend-link:focus-visible .friend-name,
+.friends-site-info a:hover,
+.friends-site-info a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.friend-link:focus-visible,
+.friends-site-info a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.friend-description {
+  display: block;
+  margin-top: 8px;
+  color: var(--secondary);
+  font-family: var(--reading-font);
+  font-size: 17px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.friend-domain {
+  display: block;
+  margin-top: 8px;
+  color: var(--meta);
+  font-family: var(--ui-font);
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.friends-empty {
+  margin-top: 32px;
+  padding: 24px 0;
+  border-block: 1px solid var(--border);
+  color: var(--secondary);
+  font-family: var(--reading-font);
+  font-size: 17px;
+}
+
+.friends-self {
+  margin-top: 40px;
+}
+
+.friends-self h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.friends-site-info > div {
+  display: grid;
+  grid-template-columns: 3.5em minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 12px;
+  align-items: baseline;
+}
+
+.friends-site-info dt {
+  color: var(--meta);
+  font-size: 13px;
+}
+
+.friends-site-info dd {
+  margin: 0;
+  color: var(--content);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .friend-link {
+    padding-block: 20px;
+  }
+
+  .friend-name {
+    font-size: 19px;
+  }
+
+  .friends-site-info > div {
+    gap: 12px;
+  }
+}

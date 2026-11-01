@@ -1,3 +1,18 @@
+- id: friends_empty
+  translation: "No links yet."
+
+- id: friends_site_info
+  translation: "About this site"
+
+- id: friends_name
+  translation: "Name"
+
+- id: friends_url
+  translation: "URL"
+
+- id: friends_description
+  translation: "About"
+
 - id: prev_post
   translation: "Previous article"
 

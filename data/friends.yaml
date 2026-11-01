@@ -1,0 +1,24 @@
+# 本站地址用于页面底部的交换友链信息。
+site:
+  url: "https://blog.pyaxy.com/"
+
+# 友链按填写顺序显示。name、url 必填，简介可不填。
+# 英文名称和简介可选；不填 name_en / description_en 时沿用原文。
+# 简介使用纯文本。
+#
+# 添加友链时，按下面格式在 links 下继续追加条目：
+# links:
+#   - name: "朋友的博客"
+#     url: "https://example.com/"
+#     description: "记录技术与生活。"
+#     name_en: "A Friend’s Blog"
+#     description_en: "Notes on technology and life."
+#   - name: "另一位朋友"
+#     url: "https://example.org/"
+#     description: "另一句简介。"
+links:
+  - name: "T的博客"
+    url: "https://blog.awaitu.online/?t=1"
+    description: "记录与分享，也有实用工具和小游戏。"
+    name_en: "T's Blog"
+    description_en: "Notes and sharing, with useful tools and small games."

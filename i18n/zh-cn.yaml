@@ -1,4 +1,19 @@
 # PaperMod ships zh; the existing site uses zh-cn to preserve its URLs.
+- id: friends_empty
+  translation: "友链慢慢添加中。"
+
+- id: friends_site_info
+  translation: "本站信息"
+
+- id: friends_name
+  translation: "名称"
+
+- id: friends_url
+  translation: "地址"
+
+- id: friends_description
+  translation: "简介"
+
 - id: callout_note
   translation: "注意"
 
