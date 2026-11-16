@@ -9,7 +9,7 @@ categories = ["Thoughts"]
 series = []
 
 [params]
-  ShowToc = true
+  ShowToc = false
   showReadingTime = true
 +++
 
@@ -23,7 +23,7 @@ But here's the strange part. I feel like I studied English for over a decade jus
 
 ---
 
-### I think the latter is the main reason
+## I think the latter is the main reason
 
 The similarities between Chinese and Japanese certainly make for a comfortable start. Especially since Japanese looks like Chinese and sounds like English, it really does help you pick up some basic words quickly.
 
@@ -39,7 +39,7 @@ This actually helped me see the limitations of how I used to learn English. Back
 
 ---
 
-### Memorizing vocabulary can greatly improve your ability to build a knowledge graph
+## Memorizing vocabulary can greatly improve your ability to build a knowledge graph
 
 It can help you build a knowledge graph very quickly, but in the early stages, you see almost no return at all. Only when the amount of vocabulary you've accumulated passes a certain point do the returns start showing up rapidly.
 
@@ -65,7 +65,7 @@ There's a sense of only realizing it afterward with this method. After all,
 
 ---
 
-### Before they “start working,” some learning methods look almost exactly like ineffective ones
+## Before they “start working,” some learning methods look almost exactly like ineffective ones
 
 When I first started learning this graph method, what I saw was still: taking notes, memorizing words, memorizing phrases.
 
@@ -81,7 +81,7 @@ I'll tentatively say this method has `foresight in hindsight`.
 
 ---
 
-### Learning English itself has this quality too.
+## Learning English itself has this quality too.
 
 It was only after I learned English that I realized how much it could help someone understand the world. But maybe only people who have also learned English can relate to that realization.
 
@@ -93,7 +93,7 @@ The former is “I know English is useful.” The latter is “I can no longer i
 
 ---
 
-### I guess this is one limitation of the Chinese way of urging people to study
+## I guess this is one limitation of the Chinese way of urging people to study
 
 The Chinese way of urging people to study isn't necessarily useless, but its limitation is that it keeps passing on conclusions:
 
@@ -107,7 +107,7 @@ As a student, you can't see `memorize vocabulary -> accumulate enough to build a
 
 ---
 
-### There are two kinds of knowledge
+## There are two kinds of knowledge
 
 One can be told to you. The other can only be yours once you've experienced it.
 
@@ -121,7 +121,7 @@ But not every field has a teacher like that. A lot of valuable knowledge, once w
 
 These sayings are true in some situations and are just fooling people in others. You simply can't tell from the sentence alone. Language can preserve a conclusion, but it can't preserve the experience that led to it. Like “only understanding what that saying means after a breakup,” “only understanding certain things your parents did after living independently,” or “only realizing why engineering standards are so fussy after working on a large project.”
 
-### What you learn from paper is shallow; to truly understand it, you must put it into practice
+## What you learn from paper is shallow; to truly understand it, you must put it into practice
 
 I'm gradually coming to understand what this line means too. And the most interesting thing is that the line itself is on paper. There's a sense of recursion to it, and a sense of self-reference too.
 
@@ -129,11 +129,11 @@ I'm gradually coming to understand what this line means too. And the most intere
 
 Since practice is so important, a new question comes up.
 
-### When a truth you haven't yet verified for yourself looks no different from motivational platitudes, disciplinary rhetoric, or fallacies, what should you do?
+## When a truth you haven't yet verified for yourself looks no different from motivational platitudes, disciplinary rhetoric, or fallacies, what should you do?
 
 I haven't worked out an answer to this yet. I have a few ideas, but not many. For now, I suppose that if following a saying can help you gain more knowledge and develop more fully as a person, you can give it a try.
 
-### An aside
+## An aside
 
 This post is meant to break the “spell” of the foresight in hindsight that some practices have: to help people understand that not seeing a return yet doesn't necessarily mean the method is wrong. But the post itself is part of the “spell.” It, too, has recursion and self-reference.
 

@@ -9,7 +9,7 @@ categories = []
 series = []
 
 [params]
-  ShowToc = true
+  ShowToc = false
   showReadingTime = true
 +++
 

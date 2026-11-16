@@ -6,30 +6,43 @@
 
     const isZh = document.documentElement.lang?.toLowerCase().startsWith("zh");
 
-    let headings = Array.from(content.querySelectorAll("h2[id], h3[id]"));
-    if (headings.length > 24) {
-      headings = Array.from(content.querySelectorAll("h2[id]"));
+    let headings = Array.from(content.querySelectorAll("h1[id], h2[id], h3[id], h4[id]"));
+    let distinctTags = Array.from(
+      new Set(headings.map((h) => Number(h.tagName.slice(1))))
+    ).sort((a, b) => a - b);
+    if (headings.length > 28 && distinctTags.length > 2) {
+      const deepestTag = distinctTags[distinctTags.length - 1];
+      headings = headings.filter((h) => Number(h.tagName.slice(1)) !== deepestTag);
+      distinctTags = Array.from(
+        new Set(headings.map((h) => Number(h.tagName.slice(1))))
+      ).sort((a, b) => a - b);
     }
 
+    const isHeadingMode = headings.length >= 2;
     let items = [];
 
-    if (headings.length >= 3) {
-      // Mode A: Heading mode
+    if (isHeadingMode) {
+      // Mode A: Heading mode (TOC)
       items = headings.map((heading) => {
         const clone = heading.cloneNode(true);
         clone.querySelectorAll(".anchor").forEach((a) => a.remove());
         const cleanText = (clone.textContent || "").replace(/\s+/g, " ").trim();
-        const label =
-          cleanText.length > 28 ? cleanText.slice(0, 27) + "…" : (cleanText || heading.id || "Section");
-        const level = heading.tagName.toUpperCase() === "H3" ? 3 : 2;
-        const baseWidth = level === 3 ? 8 : 12;
+        const isTruncated = cleanText.length > 38;
+        const label = isTruncated
+          ? cleanText.slice(0, 37) + "…"
+          : cleanText || heading.id || "Section";
+        const tagNumber = Number(heading.tagName.slice(1));
+        const depth = Math.min(2, Math.max(0, distinctTags.indexOf(tagNumber)));
+        const baseWidth = depth === 0 ? 14 : depth === 1 ? 10 : 7;
 
         return {
           el: heading,
           id: heading.id,
-          level,
+          level: tagNumber,
+          depth,
           baseWidth,
           label,
+          fullText: isTruncated ? cleanText : "",
           isGeneratedId: false,
         };
       });
@@ -101,6 +114,7 @@
         }
 
         const level = 2;
+        const depth = 0;
         const baseWidth =
           minChars === maxChars
             ? 11
@@ -125,9 +139,11 @@
           el,
           id,
           level,
+          depth,
           chars: g.chars,
           baseWidth,
           label,
+          fullText: "",
           isGeneratedId,
         };
       });
@@ -138,6 +154,7 @@
     // DOM construction
     const nav = document.createElement("nav");
     nav.className = "reading-rail";
+    nav.dataset.mode = isHeadingMode ? "toc" : "essay";
     nav.setAttribute("aria-label", isZh ? "阅读进度" : "Reading progress");
 
     const ol = document.createElement("ol");
@@ -150,11 +167,15 @@
       const li = document.createElement("li");
       li.className = "reading-rail-item";
       li.dataset.level = String(item.level);
+      li.dataset.depth = String(item.depth ?? 0);
 
       const a = document.createElement("a");
       a.className = "reading-rail-link";
       a.href = `#${encodeURIComponent(item.id)}`;
       a.setAttribute("aria-label", item.label);
+      if (item.fullText) {
+        a.title = item.fullText;
+      }
       a.style.setProperty("--rail-base", `${item.baseWidth}px`);
       a.style.setProperty("--rail-p", "0");
 
@@ -222,11 +243,10 @@
     function update() {
       const scrollY = Math.max(0, window.scrollY);
       const vh = window.innerHeight;
-      const longEnough = contentBottom - contentTop >= vh * 1.35;
+      const longEnough = isHeadingMode || contentBottom - contentTop >= vh * 1.35;
       const visible =
         longEnough &&
-        ((scrollY > titleBottom - vh * 0.35 && scrollY < contentBottom - vh * 0.25) ||
-          nav.matches(":focus-within"));
+        (scrollY < contentBottom - vh * 0.2 || nav.matches(":focus-within"));
       nav.classList.toggle("is-visible", visible);
 
       const anchor = scrollY + vh * 0.32;
@@ -239,6 +259,10 @@
           activeIdx = i;
           break;
         }
+      }
+
+      if (activeIdx === -1 && items.length > 0) {
+        activeIdx = 0;
       }
 
       if (isAtBottom && items.length > 0) {
