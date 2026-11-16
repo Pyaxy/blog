@@ -1,0 +1,317 @@
+/* ==========================================================================
+   Motion stylesheet
+   Anthropic-inspired restrained motion: warm paper / dark, terracotta accent,
+   quiet, unhurried easing. Complements custom.css (tokens, type, layout).
+
+   Loaded via Hugo's `assets/css/extended/*` bundle, after PaperMod core CSS,
+   so equal-specificity rules here override the theme.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Motion tokens & header surface tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 560ms;
+
+  /* Header surface: solid fallback first, color-mix refinement where supported. */
+  --header-surface: rgba(250, 249, 245, 0.82);
+  --header-surface: color-mix(in srgb, var(--theme) 82%, transparent);
+}
+
+:root[data-theme="dark"] {
+  --header-surface: rgba(31, 30, 29, 0.82);
+  --header-surface: color-mix(in srgb, var(--theme) 82%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   2. Smart sticky header
+   The JS agent adds `.js-smart-header` to `:root` and toggles
+   `data-state="pinned" | "hidden"` on `body > .header`. Without JS the
+   header keeps its static position / z-index from custom.css.
+   -------------------------------------------------------------------------- */
+
+.js-smart-header body > .header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: transparent;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    backdrop-filter var(--dur-base) var(--ease-out);
+  will-change: transform;
+}
+
+.js-smart-header body > .header[data-state="pinned"] {
+  transform: translateY(0);
+  background: var(--header-surface);
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
+}
+
+.js-smart-header body > .header[data-state="hidden"] {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Anchor targets scroll clear of the sticky header. */
+.post-content :is(h1, h2, h3, h4, h5, h6),
+.post-content [id^="rail-sec-"] {
+  scroll-margin-top: calc(var(--header-height) + 20px);
+}
+
+/* --------------------------------------------------------------------------
+   3. Side reading progress rail
+   DOM created by reading-rail.js:
+
+     <nav class="reading-rail" aria-label="阅读进度">
+       <ol class="reading-rail-list">
+         <li class="reading-rail-item" data-level="2" data-state="past|active|upcoming">
+           <a class="reading-rail-link" href="#..." style="--rail-base: 12px; --rail-p: 0.45;">
+             <span class="reading-rail-label" aria-hidden="true">Section title</span>
+             <span class="reading-rail-tick" aria-hidden="true"></span>
+           </a>
+         </li>
+       </ol>
+     </nav>
+   -------------------------------------------------------------------------- */
+
+.reading-rail {
+  position: fixed;
+  top: 50%;
+  right: max(24px, calc((100vw - var(--main-width)) / 4 - 20px));
+  z-index: 15;
+  transform: translateY(-50%) translateX(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+.reading-rail.is-visible,
+.reading-rail:focus-within {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  pointer-events: auto;
+}
+
+.reading-rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.reading-rail-item {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reading-rail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 5px 0 5px 12px;
+  text-decoration: none;
+  color: var(--secondary);
+  outline: none;
+}
+
+/* The thin progress tick. */
+.reading-rail-tick {
+  display: block;
+  height: 1.5px;
+  border-radius: 1px;
+  width: var(--rail-base, 12px);
+  background: var(--secondary);
+  opacity: 0.32;
+  transition:
+    width var(--dur-base) var(--ease-out),
+    background-color var(--dur-base) var(--ease-out),
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+/* Sections already read: quiet, primary-coloured. */
+.reading-rail-item[data-state="past"] .reading-rail-tick {
+  background: var(--primary);
+  opacity: 0.45;
+}
+
+/* The section being read: expands by +12px over base immediately, then grows
+   up to +20px as `--rail-p` advances from 0 → 1. */
+.reading-rail-item[data-state="active"] .reading-rail-tick {
+  width: calc(var(--rail-base, 12px) + 12px + 8px * var(--rail-p, 0));
+  background: var(--accent);
+  opacity: 1;
+}
+
+/* Hover / keyboard focus on an individual tick. */
+.reading-rail-link:hover .reading-rail-tick,
+.reading-rail-link:focus-visible .reading-rail-tick {
+  opacity: 0.9;
+}
+
+.reading-rail-item[data-state="active"] .reading-rail-link:hover .reading-rail-tick {
+  opacity: 1;
+}
+
+/* The section label: hidden until the rail is hovered or focused. */
+.reading-rail-label {
+  font-family: var(--ui-font);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--secondary);
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: end;
+  opacity: 0;
+  transform: translateX(4px);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.reading-rail:hover .reading-rail-label,
+.reading-rail:focus-within .reading-rail-label {
+  opacity: 0.65;
+  transform: translateX(0);
+}
+
+.reading-rail-item[data-state="active"] .reading-rail-label {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.reading-rail:hover .reading-rail-item[data-state="active"] .reading-rail-label,
+.reading-rail-link:hover .reading-rail-label,
+.reading-rail-link:focus-visible .reading-rail-label {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.reading-rail-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+@media (max-width: 1120px) {
+  .reading-rail {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Subtle entrance & micro-interactions
+   -------------------------------------------------------------------------- */
+
+@keyframes editorial-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.post-single > .post-header {
+  animation: editorial-rise var(--dur-slow) var(--ease-out) both;
+}
+
+.post-single > .post-content,
+.friends-page > .friends-list {
+  animation: editorial-rise var(--dur-slow) var(--ease-out) 60ms both;
+}
+
+.home-info {
+  animation: editorial-rise var(--dur-slow) var(--ease-out) both;
+}
+
+.post-entry {
+  animation: editorial-rise var(--dur-slow) var(--ease-out) both;
+}
+
+/* Stagger the list entries as they rise. */
+.post-entry:nth-of-type(1) { animation-delay: 40ms; }
+.post-entry:nth-of-type(2) { animation-delay: 80ms; }
+.post-entry:nth-of-type(3) { animation-delay: 120ms; }
+.post-entry:nth-of-type(4) { animation-delay: 160ms; }
+.post-entry:nth-of-type(5) { animation-delay: 200ms; }
+.post-entry:nth-of-type(6) { animation-delay: 240ms; }
+.post-entry:nth-of-type(n + 7) { animation-delay: 240ms; }
+
+/* Link underline colour shifts instead of abrupt jumps. */
+a,
+.post-content a:not(.anchor),
+.post-tags a {
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.post-entry .entry-header h2 {
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out);
+}
+
+/* Scroll-to-top: replace PaperMod's abrupt visibility/opacity toggle with a
+   gentle fade + rise. `.hidden` is still toggled by the footer script. */
+.top-link {
+  transform: translateY(0);
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out),
+    visibility var(--dur-base) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.top-link.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. Reduced motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .post-single > .post-header,
+  .post-single > .post-content,
+  .friends-page > .friends-list,
+  .home-info,
+  .post-entry {
+    animation: none !important;
+  }
+
+  .js-smart-header body > .header,
+  .reading-rail,
+  .reading-rail-tick,
+  .reading-rail-label,
+  .top-link {
+    transition: none !important;
+  }
+}

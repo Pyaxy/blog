@@ -18,3 +18,11 @@
 {{- $notice := resources.FromString "assets/js/pond-license.js" (printf "/*!\n%s\n*/\n" $license.Content) }}
 {{- $pond := slice $notice $pondCore | resources.Concat "assets/js/pond.js" | fingerprint }}
 <script defer src="{{ $pond.RelPermalink }}" integrity="{{ $pond.Data.Integrity }}" crossorigin="anonymous"></script>
+
+{{- $header := resources.Get "js/header.js" | js.Build (dict "targetPath" "assets/js/header.js" "minify" true "target" "es2020") | fingerprint }}
+<script defer src="{{ $header.RelPermalink }}" integrity="{{ $header.Data.Integrity }}" crossorigin="anonymous"></script>
+
+{{- if and (eq .Kind "page") (not (in (slice "archives" "search" "friends") .Layout)) }}
+{{- $rail := resources.Get "js/reading-rail.js" | js.Build (dict "targetPath" "assets/js/reading-rail.js" "minify" true "target" "es2020") | fingerprint }}
+<script defer src="{{ $rail.RelPermalink }}" integrity="{{ $rail.Data.Integrity }}" crossorigin="anonymous"></script>
+{{- end }}
