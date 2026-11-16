@@ -42,11 +42,15 @@ body,
   background: var(--theme);
 }
 
-body > .header,
 body > .main,
 body > .footer {
   position: relative;
   z-index: 1;
+}
+
+body > .header {
+  position: relative;
+  z-index: 10;
 }
 
 #pond-canvas {
