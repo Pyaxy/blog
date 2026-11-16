@@ -9,7 +9,7 @@ categories = ["Projects"]
 series = []
 
 [params]
-  ShowToc = true
+  ShowToc = false
   showReadingTime = true
 
 [params.cover]

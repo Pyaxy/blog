@@ -81,135 +81,103 @@
    -------------------------------------------------------------------------- */
 
 .reading-rail {
+  --rail-inset: clamp(24px, 4vw, 84px);
+  --rail-target: 44px;
   position: fixed;
   top: 50%;
-  right: max(24px, calc((100vw - var(--main-width)) / 4 - 20px));
+  right: var(--rail-inset);
+  /* Keep labels inside the margin, including at the narrowest desktop width. */
+  width: min(300px, calc((100% - var(--main-width)) / 2 - var(--rail-inset) - 24px));
   z-index: 15;
-  transform: translateY(-50%) translateX(4px);
+  transform: translateY(-50%);
   opacity: 0;
   pointer-events: none;
-  transition:
-    opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out);
+  transition: opacity var(--dur-base) var(--ease-out);
 }
 
 .reading-rail.is-visible,
 .reading-rail:focus-within {
   opacity: 1;
-  transform: translateY(-50%) translateX(0);
-  pointer-events: auto;
 }
 
 .reading-rail-list {
   list-style: none;
   margin: 0;
-  padding: 8px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+  padding: 0;
+  max-height: min(72vh, 520px);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.reading-rail-list::-webkit-scrollbar {
+  display: none;
 }
 
 .reading-rail-item {
-  margin: 0;
-  padding: 0;
+  position: relative;
   display: flex;
   justify-content: flex-end;
+  margin: 0;
+  padding: 0;
 }
 
 .reading-rail-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  padding: 5px 0 5px 12px;
+  width: var(--rail-target);
+  height: 24px;
+  padding-inline-end: 4px;
   text-decoration: none;
-  color: var(--secondary);
-  outline: none;
 }
 
-/* The thin progress tick. */
+.reading-rail.is-visible .reading-rail-link,
+.reading-rail:focus-within .reading-rail-link {
+  pointer-events: auto;
+}
+
 .reading-rail-tick {
-  display: block;
-  height: 1.5px;
-  border-radius: 1px;
+  height: 1px;
   width: var(--rail-base, 12px);
   background: var(--secondary);
-  opacity: 0.32;
+  opacity: 0.38;
   transition:
     width var(--dur-base) var(--ease-out),
-    background-color var(--dur-base) var(--ease-out),
-    opacity var(--dur-base) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out);
+    opacity var(--dur-fast) var(--ease-out);
 }
 
-/* Sections already read: quiet, primary-coloured. */
 .reading-rail-item[data-state="past"] .reading-rail-tick {
-  background: var(--primary);
-  opacity: 0.45;
+  opacity: 0.65;
 }
 
-/* The section being read: expands by +12px over base immediately, then grows
-   up to +20px as `--rail-p` advances from 0 → 1. */
 .reading-rail-item[data-state="active"] .reading-rail-tick {
-  width: calc(var(--rail-base, 12px) + 12px + 8px * var(--rail-p, 0));
+  width: calc(var(--rail-base, 12px) + 12px + 10px * var(--rail-p, 0));
   background: var(--accent);
   opacity: 1;
 }
 
-/* Hover / keyboard focus on an individual tick. */
-.reading-rail-link:hover .reading-rail-tick,
-.reading-rail-link:focus-visible .reading-rail-tick {
-  opacity: 0.9;
-}
-
-.reading-rail-item[data-state="active"] .reading-rail-link:hover .reading-rail-tick {
-  opacity: 1;
-}
-
-/* The section label: hidden until the rail is hovered or focused. */
 .reading-rail-label {
-  font-family: var(--ui-font);
-  font-size: 12px;
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-  color: var(--secondary);
-  max-width: 160px;
-  white-space: nowrap;
+  position: absolute;
+  inset-inline-end: calc(var(--rail-target) + 4px);
+  max-width: calc(100% - var(--rail-target) - 4px);
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  text-align: end;
+  font: 400 13px/1.5 var(--reading-font);
+  color: var(--secondary);
   opacity: 0;
-  transform: translateX(4px);
   pointer-events: none;
-  transition:
-    opacity var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
+  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.reading-rail:hover .reading-rail-label,
-.reading-rail:focus-within .reading-rail-label {
-  opacity: 0.65;
-  transform: translateX(0);
-}
-
-.reading-rail-item[data-state="active"] .reading-rail-label {
-  color: var(--primary);
-  font-weight: 500;
-}
-
-.reading-rail:hover .reading-rail-item[data-state="active"] .reading-rail-label,
-.reading-rail-link:hover .reading-rail-label,
-.reading-rail-link:focus-visible .reading-rail-label {
+.reading-rail-link:is(:hover, :focus-visible) .reading-rail-label,
+.reading-rail-link:is(:hover, :focus-visible) .reading-rail-tick {
   opacity: 1;
-  color: var(--primary);
 }
 
 .reading-rail-link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 3px;
+  outline: 1px solid var(--secondary);
+  outline-offset: -1px;
 }
 
 @media (max-width: 1120px) {
