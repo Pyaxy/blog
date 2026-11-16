@@ -201,20 +201,25 @@
   }
 }
 
-.post-single > .post-header {
+@keyframes reading-fade {
+  from { opacity: 0.72; }
+  to { opacity: 1; }
+}
+
+.post-single:not(.friends-page) > .post-header .post-title,
+.home-info {
+  animation: reading-fade 420ms ease-in-out;
+}
+
+.friends-page > .post-header {
   animation: editorial-rise var(--dur-slow) var(--ease-out) both;
 }
 
-.post-single > .post-content,
 .friends-page > .friends-list {
   animation: editorial-rise var(--dur-slow) var(--ease-out) 60ms both;
 }
 
-.home-info {
-  animation: editorial-rise var(--dur-slow) var(--ease-out) both;
-}
-
-.post-entry {
+.post-entry:not(.home-post-entry) {
   animation: editorial-rise var(--dur-slow) var(--ease-out) both;
 }
 
@@ -267,8 +272,8 @@ a,
    -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .post-single > .post-header,
-  .post-single > .post-content,
+  .post-title,
+  .friends-page > .post-header,
   .friends-page > .friends-list,
   .home-info,
   .post-entry {

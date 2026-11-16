@@ -161,6 +161,31 @@
     ol.className = "reading-rail-list";
     nav.appendChild(ol);
 
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let pendingArrival = null;
+    let arrivalTimer;
+    let inkAnimation;
+
+    function waitForArrival() {
+      if (!pendingArrival) return;
+      clearTimeout(arrivalTimer);
+      arrivalTimer = setTimeout(() => {
+        const { heading, top } = pendingArrival;
+        pendingArrival = null;
+        if (document.activeElement !== heading || reducedMotion.matches ||
+            Math.abs(window.scrollY - top) > 2) return;
+
+        const ink = getComputedStyle(heading).color;
+        const warmInk = "color-mix(in srgb, var(--accent) 55%, var(--primary))";
+        inkAnimation = heading.animate([
+          { color: ink, offset: 0, easing: "ease-in-out" },
+          { color: warmInk, offset: 0.15 },
+          { color: warmInk, offset: 0.55, easing: "ease-in-out" },
+          { color: ink, offset: 1 },
+        ], { duration: 1600 });
+      }, 100);
+    }
+
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
 
@@ -194,21 +219,26 @@
       a.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopImmediatePropagation();
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const headerEl = document.querySelector("body > .header");
         const offset =
           headerEl && headerEl.dataset.state === "pinned"
             ? (headerEl.offsetHeight || 60) + 20
             : 36;
-        const top = item.el.getBoundingClientRect().top + window.scrollY - offset;
+        const targetTop = item.el.getBoundingClientRect().top + window.scrollY - offset;
+        const maxTop = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const top = Math.max(0, Math.min(targetTop, maxTop));
+        clearTimeout(arrivalTimer);
+        inkAnimation?.cancel();
+        pendingArrival = isHeadingMode && !reducedMotion.matches ? { heading: item.el, top } : null;
         window.scrollTo({
-          top: Math.max(0, top),
-          behavior: reduced ? "auto" : "smooth",
+          top,
+          behavior: reducedMotion.matches ? "instant" : "smooth",
         });
         if (item.el.tabIndex < 0 && !item.el.hasAttribute("tabindex")) {
           item.el.setAttribute("tabindex", "-1");
         }
         item.el.focus({ preventScroll: true });
+        waitForArrival();
         if (!item.isGeneratedId && history.replaceState) {
           history.replaceState(null, "", "#" + item.id);
         }
@@ -297,6 +327,7 @@
 
     let ticking = false;
     function onScroll() {
+      waitForArrival();
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(() => {
