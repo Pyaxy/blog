@@ -8,6 +8,9 @@
   --border: #e8e6dc;
   --main-width: 680px;
   --accent: #d97757;
+  --callout-blue: #6a9bcc;
+  --callout-olive: #788c5d;
+  --callout-brick: #b85c4a;
   --meta: #6b6a65;
   --nav-hover: #f1efe8;
   --code-bg: var(--nav-hover);
@@ -184,23 +187,78 @@ samp {
 }
 
 .post-content .callout {
+  --callout-color: var(--callout-blue);
+  --callout-bg: var(--nav-hover);
+  --callout-title-color: var(--primary);
   margin: 1.5em 0;
   padding: 14px 18px;
   border: 1px solid var(--border);
-  border-inline-start: 3px solid var(--accent);
+  border-inline-start: 3px solid var(--callout-color);
   border-radius: 6px;
-  background: var(--nav-hover);
-  background: color-mix(in srgb, var(--accent) 6%, var(--theme));
+  background: var(--callout-bg);
   color: var(--content);
   font-size: 0.95em;
 }
 
-.post-content .callout-title {
+.post-content .callout-note,
+.post-content .callout-info {
+  --callout-color: var(--callout-blue);
+}
+
+.post-content .callout-tip {
+  --callout-color: var(--callout-olive);
+}
+
+.post-content .callout-warning,
+.post-content .callout-important {
+  --callout-color: var(--accent);
+}
+
+.post-content .callout-caution {
+  --callout-color: var(--callout-brick);
+}
+
+@supports (color: color-mix(in srgb, red 50%, white)) {
+  .post-content .callout {
+    --callout-bg: color-mix(in srgb, var(--callout-color) 6%, var(--theme));
+    --callout-title-color: color-mix(in srgb, var(--callout-color) 68%, var(--primary));
+  }
+
+  :root[data-theme="dark"] .post-content .callout {
+    --callout-title-color: color-mix(in srgb, var(--callout-color) 80%, var(--primary));
+  }
+}
+
+/* Beat PaperMod's `.md-content p:not(:last-child)` (0,2,1) without altering body paragraphs. */
+.post-content .callout > .callout-title {
   margin: 0 0 6px;
-  color: var(--primary);
+  color: var(--callout-title-color);
   font-family: var(--ui-font);
   font-weight: 600;
   line-height: 1.6;
+}
+
+.post-content .callout > p.callout-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45em;
+}
+
+.post-content .callout-icon {
+  flex: none;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  vertical-align: -0.22em;
+}
+
+.post-content .callout > p.callout-title > .callout-icon {
+  margin-top: calc((1.6em - 18px) / 2);
+}
+
+.post-content .callout-title-text {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .callout-body > :first-child {
@@ -211,13 +269,17 @@ samp {
   margin-bottom: 0;
 }
 
-.post-content details.callout > summary {
+.post-content details.callout > summary.callout-title {
   width: auto;
   margin: 0;
   padding: 0;
 }
 
-.post-content details.callout[open] > summary {
+.post-content details.callout > summary.callout-title > .callout-icon {
+  margin-inline: 0.2em 0.45em;
+}
+
+.post-content details.callout[open] > summary.callout-title {
   margin-bottom: 10px;
 }
 

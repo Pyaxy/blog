@@ -1,13 +1,14 @@
 {{- if eq .Type "alert" -}}
-  {{- $title := .AlertTitle | default (or (i18n (printf "callout_%s" .AlertType)) (title .AlertType)) -}}
+  {{- $type := lower .AlertType -}}
+  {{- $title := .AlertTitle | default (or (i18n (printf "callout_%s" $type)) (title .AlertType)) -}}
   {{- if .AlertSign -}}
-<details class="callout callout-{{ .AlertType }}"{{ if eq .AlertSign "+" }} open{{ end }}>
-  <summary class="callout-title">{{ $title }}</summary>
+<details class="callout callout-{{ $type }}"{{ if eq .AlertSign "+" }} open{{ end }}>
+  <summary class="callout-title">{{- partial "callout_icon.html" $type -}}<span class="callout-title-text">{{ $title }}</span></summary>
   <div class="callout-body">{{ .Text }}</div>
 </details>
   {{- else -}}
-<div class="callout callout-{{ .AlertType }}">
-  <p class="callout-title">{{ $title }}</p>
+<div class="callout callout-{{ $type }}">
+  <p class="callout-title">{{- partial "callout_icon.html" $type -}}<span class="callout-title-text">{{ $title }}</span></p>
   <div class="callout-body">{{ .Text }}</div>
 </div>
   {{- end -}}
