@@ -381,8 +381,8 @@ a:hover {
   line-height: 1.55;
 }
 
-.home-post-entry:hover .entry-header h2,
-.home-post-entry:focus-within .entry-header h2 {
+:is(.home-post-entry, .posts-entry):hover .entry-header h2,
+:is(.home-post-entry, .posts-entry):focus-within .entry-header h2 {
   text-decoration-line: underline;
   text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;

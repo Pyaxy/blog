@@ -65,6 +65,8 @@
 
 {{- if $.IsHome }}
 {{- $class = printf "%s home-post-entry" $class }}
+{{- else if and (eq $.Kind "section") (eq $.Section "posts") }}
+{{- $class = printf "%s posts-entry" $class }}
 {{- end }}
 
 <article class="{{ $class }}">
