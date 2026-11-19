@@ -65,6 +65,10 @@ body > .header {
   pointer-events: none;
 }
 
+.home-info .entry-content {
+  overflow: visible;
+}
+
 .home-info .entry-content p:last-child::after {
   content: "";
   display: inline-block;
@@ -72,13 +76,11 @@ body > .header {
   height: 1em;
   margin-inline-start: 0.3em;
   vertical-align: -0.12em;
-  background: currentColor;
-  animation: terminal-caret 1.2s steps(1, end) infinite;
+  background: var(--accent);
 }
 
-@keyframes terminal-caret {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+.home-info .entry-content p:last-child:is(.is-home-typing, .has-home-caret)::after {
+  content: none;
 }
 
 :root[data-theme-reveal]::view-transition-group(root),
@@ -106,13 +108,6 @@ body > .header {
   }
   to {
     clip-path: circle(var(--theme-reveal-radius) at var(--theme-reveal-x) var(--theme-reveal-y));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-info .entry-content p:last-child::after {
-    animation: none;
-    opacity: 0.65;
   }
 }
 
