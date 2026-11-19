@@ -22,6 +22,19 @@
 {{- $header := resources.Get "js/header.js" | js.Build (dict "targetPath" "assets/js/header.js" "minify" true "target" "es2020") | fingerprint }}
 <script defer src="{{ $header.RelPermalink }}" integrity="{{ $header.Data.Integrity }}" crossorigin="anonymous"></script>
 
+{{- if .IsHome }}
+<script>
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("js-home-typing");
+    window.__homeTypingFallback = window.setTimeout(function () {
+      document.documentElement.classList.remove("js-home-typing");
+    }, 1500);
+  }
+</script>
+{{- $homeTyping := resources.Get "js/home-typing.js" | js.Build (dict "targetPath" "assets/js/home-typing.js" "minify" true "target" "es2020") | fingerprint }}
+<script defer src="{{ $homeTyping.RelPermalink }}" integrity="{{ $homeTyping.Data.Integrity }}" crossorigin="anonymous"></script>
+{{- end }}
+
 {{- if and (eq .Kind "page") (not (in (slice "archives" "search" "friends") .Layout)) }}
 {{- $rail := resources.Get "js/reading-rail.js" | js.Build (dict "targetPath" "assets/js/reading-rail.js" "minify" true "target" "es2020") | fingerprint }}
 <script defer src="{{ $rail.RelPermalink }}" integrity="{{ $rail.Data.Integrity }}" crossorigin="anonymous"></script>
